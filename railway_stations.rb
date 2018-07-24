@@ -1,30 +1,20 @@
 
-class Rout
-  def initialize(starting_station = "Station A", end_station = "Station F")
-    @starting_station = starting_station
-    @end_station = end_station
-    @@train_trace_list = {}
-    create_hash
-  end
-
-  @@list_of_stations = {"Station A" => 1, "Station B" => 2, "Station C" => 3, "Station D" => 4, "Station E" => 5, "Station F" => 6}  
-
-  def create_hash
-    #добавляем в хэш маршрута первую станцию и приравниваем ей порядковый номер из хэша станций
-   @@train_trace_list[@starting_station] = @@list_of_stations[@starting_station]
-   @@train_trace_list[@end_station] = @@list_of_stations[@end_station] 
+class Route
+def initialize(starting_station, end_station)
+    @train_trace_list = [starting_station, end_station]
   end
 
   def add_station (intermediate_station)
-   @@train_trace_list[intermediate_station] = @@list_of_stations[intermediate_station]
+    @train_trace_list.insert(-2, intermediate_station)
   end
 
   def delete_station(intermediate_station)
-    @@train_trace_list.delete(intermediate_station)
+    @train_trace_list.delete(intermediate_station)
   end
 
   def output
-   l =  @@train_trace_list.sort_by { |key, value| value }
+    @train_trace_list.each { |station| puts station.name }
+    @train_trace_list
   end
 
 end
@@ -32,15 +22,15 @@ end
 class Train
   attr_accessor :speed
   attr_reader :wagon_count, :number, :type
-  def initialize(number, type, wagon_count,speed = 0)
+  def initialize(number, type, wagon_count)
     @number = number
     @type = type
     @wagon_count = wagon_count  
-    @speed = speed  
+    @speed = 0  
   end
 
   def stop
-  self.speed = 0
+    self.speed = 0
   end
 
   def wagon_coupling
@@ -63,72 +53,47 @@ class Train
 
   def receive_train_trace_list (a)
     @train_trace_list = a
-    @current = @train_trace_list[0][1]
+    @current = 0
   end
    
   def forward
-    i = 0
-    while i < @train_trace_list.length  do     
-      if @current == @train_trace_list[i][1]
-        @current = @train_trace_list[i+1][1]
-        break
-      end
-    i += 1
-    end    
-    puts "Текущая станция номер #{@current}"
+    @current += 1 
   end
+
   def back
-    i = 0
-    while i < @train_trace_list.length  do
-      if @current == @train_trace_list[i][1]
-        @current = @train_trace_list[i-1][1]
-        break
-      end
-    i += 1
-    end 
+    @current -= 1  
   end
   
   def return_stations
-    i=0
-    while i < @train_trace_list.length do
-      if @current == @train_trace_list[i][1]
-      break
-      end
-      i += 1
-    end
-    puts "Предыдущая станция называется #{@train_trace_list[i-1][0]}, текущая станция : #{@train_trace_list[i][0]}, следующая станция #{@train_trace_list[i+1][0]}"
+    puts "Предыдущая станция называется #{@train_trace_list[@current-1]}, текущая станция : #{@train_trace_list[@current]}, следующая станция #{@train_trace_list[@current+1]}"
     end
 end
 
 class Station  
+
+  attr_reader :name
   
   def initialize (name)
   @name = name
-  @trains = {}
+  @trains = []
   end
 
-  def train_reception( number, type)
-    @trains[number] = type
+  def train_reception(train)
+    @trains.push(train)
   end
 
   def return_train
-    @trains.each do |key , value|
-    puts key
-    end
+    @trains
   end
 
-  def return_type
-    type_cargo = 0
-    type_passenger = 0
-    @trains.each do |key,value|
-    if value == "грузовой"
-      type_cargo += 1
-    else
-      type_passenger += 1
-    end
-    end
-    puts "Грузовых поездов: #{type_cargo} пассажирских поездов :#{type_passenger}"
+  def return_type 
+     cargo = 0
+     @trains.each do |train|
+       cargo += 1 if train.type == "грузовой"
+     end
+     puts "Грузовых поездов на станции: #{cargo}. Пассажирских поездов на станции: #{@trains.length - cargo}."
   end
+
   def delete_train (number)
     @trains.delete(number)
   end
@@ -138,14 +103,21 @@ end
 
 
 #Проверки класса Роут
-rout1 = Rout.new("Station A","Station E")
-rout1.add_station("Station B")
-rout1.add_station("Station C")
-rout1.delete_station("Station B")
+station2 = Station.new ("Station A")
+station3 = Station.new ("Station E")
+station4 = Station.new ("Station B")
+station5 = Station.new ("Station C")
+rout1 = Route.new(station2,station3)
+rout1.add_station(station4)
+rout1.add_station(station5)
+rout1.delete_station(station4)
+
 rout1.output
 
 #Проверки класса Траин
-train1 = Train.new("W1","грузовой",5)
+train1 = Train.new("W1", "грузовой", 5)
+train2 = Train.new("Q2", "пассажирский", 5)
+train3 = Train.new("M3", "грузовой", 6)
 
 #train1.wagon_coupling
 #train1.wagon_split
@@ -156,12 +128,17 @@ train1 = Train.new("W1","грузовой",5)
 #train1.return_stations
 
 station1 = Station.new ("Station A")
-station1.train_reception("W1","грузовой")
-station1.train_reception("Q1","пассажирский")
-station1.train_reception("P1","грузовой")
+#station1.train_reception(train1)
+#station1.train_reception(train2)
+#station1.train_reception(train3)
+#station1.return_train
+#station1.return_type
+#station1.train_reception("Q1","пассажирский")
+#station1.train_reception("P1","грузовой")
 
-station1.return_train
-station1.return_type
-station1.delete_train("W1")
-station1.return_train
+#station1.return_train
+#station1.return_type
+#station1.delete_train("W1")
+#station1.return_train
+
 
