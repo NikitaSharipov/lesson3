@@ -1,7 +1,6 @@
 class Route
 
   #все эти методы используются извне
-  public
 
   def initialize(starting_station, end_station)
     @train_trace_list = [starting_station, end_station]

@@ -17,8 +17,8 @@ def notation
 end
 
 =begin
-
 =end
+
 station1 = Station.new('www')
 station2 = Station.new('eee')
 station3 = Station.new('zzz')
@@ -36,6 +36,8 @@ train1 = CargoTrain.new ("W1")
 all_trains.push(train1)
 
 train1.receive_train_trace_list(routes1.output)
+
+#=end
 
 loop do
   puts "1. Создать станцию"
@@ -80,7 +82,9 @@ loop do
     puts "Введите поочередно название начальной и конечной станции маршрута"
     input_starting_station = gets.chomp
     input_end_station = gets.chomp
-    route = Route.new( @all_stations.select {|station| station.name == input_starting_station} , @all_stations.select {|station| station.name == input_end_station} )
+    select_starting_station = @all_stations.select {|station| station.name == input_starting_station}
+    select_end_station = @all_stations.select {|station| station.name == input_end_station}
+    route = Route.new( select_starting_station, select_end_station)
     all_routes.push(route)
   end
   
@@ -125,17 +129,16 @@ loop do
   if input == 6
     puts "Введите номер поезда"
     input_train_number = gets.chomp
-
     all_trains.each do |train|
       if train.number == input_train_number
-      	if train.type == 'грузовой'
+        if train.type == 'грузовой'
           cargo_wagon = CargoWagon.new
           train.wagon_coupling(cargo_wagon)
         else
           passenger_wagon = PassengerWagon.new
           train.wagon_coupling(passenger_wagon)
-      	end
-      end 
+        end
+      end
     end
   end
 
@@ -185,8 +188,7 @@ loop do
 end
 
 
-
-puts train1.return_stations
+#puts train1.return_stations
 
 =begin
   def notation

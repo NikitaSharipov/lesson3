@@ -1,9 +1,6 @@
 class Train
   attr_accessor :speed
   attr_reader :number, :type
-  
-  
-  public
 
   def initialize(number, type)
     @type = type
@@ -35,7 +32,8 @@ class Train
   end
   
   def return_stations
-    puts "Предыдущая станция называется #{@train_trace_list[@current - 1].name}, текущая станция : #{@train_trace_list[@current].name}, следующая станция #{@train_trace_list[@current + 1].name}"
+    #возвращаем предыдущую, текующую и следующую станции
+    return @train_trace_list[@current - 1].name, @train_trace_list[@current].name, @train_trace_list[@current + 1].name
   end
 
   def wagon_coupling (single_wagon)
