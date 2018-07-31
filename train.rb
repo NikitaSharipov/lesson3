@@ -20,9 +20,11 @@ class Train
   end
    
   def forward 
+    puts @current
     @train_trace_list[@current].delete_train(self)
     @current += 1 
     @train_trace_list[@current].train_reception(self)
+    puts @current
   end
 
   def back
