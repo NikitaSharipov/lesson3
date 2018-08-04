@@ -1,9 +1,13 @@
+require_relative 'instance_counter.rb'
+
 class Route
 
   #все эти методы используются извне
+  include InstanceCounter
 
   def initialize(starting_station, end_station)
     @train_trace_list = [starting_station, end_station]
+    register_instance
   end
 
   def add_station(intermediate_station)

@@ -1,12 +1,25 @@
+require_relative 'company_name'
+require_relative 'instance_counter.rb'
+
+
 class Train
+  include InstanceCounter, CompanyName
   attr_accessor :speed
   attr_reader :number, :type
+
+  @@all_trains = []
 
   def initialize(number, type)
     @type = type
     @number = number
     @speed = 0  
     @wagon = []
+    @@all_trains.push(self)
+    register_instance
+  end
+
+  def self.find(get_number)
+    @@all_trains.detect(ifnone = nil) {|train| train.number == get_number }
   end
 
   def stop
@@ -20,11 +33,9 @@ class Train
   end
    
   def forward 
-    puts @current
     @train_trace_list[@current].delete_train(self)
     @current += 1 
     @train_trace_list[@current].train_reception(self)
-    puts @current
   end
 
   def back

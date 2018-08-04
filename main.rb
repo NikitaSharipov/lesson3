@@ -16,7 +16,7 @@ def notation
   @all_stations.each {|station| puts station.name}
 end
 
-=begin
+
 station1 = Station.new('www')
 station2 = Station.new('eee')
 station3 = Station.new('zzz')
@@ -34,7 +34,7 @@ train1 = CargoTrain.new ("W1")
 all_trains.push(train1)
 
 train1.receive_train_trace_list(routes1.output)
-=end
+
 
 loop do
   puts "1. Создать станцию"
@@ -185,3 +185,27 @@ loop do
   end
 
 end
+
+def l
+  a = [1,2,3,4,5]
+  return a.each {|a| a}
+end
+
+
+#train1.company_name = 'Company1'
+#train1.company_name = 'Company2'
+#puts wagon1.company_name
+#wagon1 = CargoWagon.new
+#wagon1.company_name = 'Company2'
+#puts wagon1.company_name
+
+#puts Station.all
+
+#puts Train.find('W1').class
+#puts Train.find('W2323123').class
+
+#train2 = CargoTrain.new ("W2")
+#train3 = CargoTrain.new ("W2")
+
+#puts CargoTrain.instances
+#puts Station.instances
