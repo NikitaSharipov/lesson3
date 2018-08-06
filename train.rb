@@ -9,6 +9,8 @@ class Train
 
   @@all_trains = []
 
+  TRAIN_NUMBER_FORMAT = /^[\da-zA-zа-яА-я]{3}-?[\da-zA-zа-яА-я]{2}$/
+
   def initialize(number, type)
     @type = type
     @number = number
@@ -16,6 +18,7 @@ class Train
     @wagon = []
     @@all_trains.push(self)
     register_instance
+    validate!
   end
 
   def self.find(get_number)
@@ -28,6 +31,7 @@ class Train
 
   def receive_train_trace_list(a)
     @train_trace_list = a
+    validate_route(a)
     @current = 0
     @train_trace_list[@current].train_reception(self)
   end
@@ -59,6 +63,27 @@ class Train
 
   def wagon_count
     @wagon.length
+  end
+
+  def valid?
+    validate!
+    validate_route(@train_trace_list) 
+  rescue
+    false
+  end
+
+  protected
+
+  def validate!
+
+    raise "number too short" if @number.length < 2
+    raise "number too long" if @number.length > 20
+    raise "Number has invalid format" if @number !~ TRAIN_NUMBER_FORMAT
+    true
+  end
+
+  def validate_route (route)
+    raise "train trace list must be Array" unless route.is_a? Array
   end
 
   #вынесен в приват потому что эта проверка необходима только в этом классе

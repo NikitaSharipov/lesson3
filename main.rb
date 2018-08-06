@@ -7,6 +7,7 @@ require_relative 'wagon'
 require_relative 'cargo_wagon'
 require_relative 'passenger_wagon'
 
+
 @all_stations = []
 all_trains = []
 all_routes = []
@@ -16,7 +17,7 @@ def notation
   @all_stations.each {|station| puts station.name}
 end
 
-
+=begin
 station1 = Station.new('www')
 station2 = Station.new('eee')
 station3 = Station.new('zzz')
@@ -30,11 +31,11 @@ all_routes.push(routes1)
 
 routes1.add_station(station2)
 
-train1 = CargoTrain.new ("W1")
+train1 = CargoTrain.new ("WW1-22")
 all_trains.push(train1)
 
 train1.receive_train_trace_list(routes1.output)
-
+=end
 
 loop do
   puts "1. Создать станцию"
@@ -60,6 +61,7 @@ loop do
   end
 
   if input == 2
+    begin
     puts "Введите номер поезда"
     train_number = gets.chomp
     puts "1. Поезд грузовой"
@@ -71,6 +73,11 @@ loop do
       train = PassengerTrain.new(train_number)
     end
     all_trains.push(train)
+    puts "Поезд #{train.number} создан, тип поезда #{train.type}"
+    rescue RuntimeError => e
+      puts "Что-то пошло не так, повторите ввод. Ошибка: #{e.inspect}"
+      retry
+    end
   end
 
   if input == 3
@@ -190,6 +197,11 @@ def l
   a = [1,2,3,4,5]
   return a.each {|a| a}
 end
+
+#Проверки валидностей
+#puts '1' if station1.is_a? Route
+#routes1 = Route.new('1','station3')
+#train1.receive_train_trace_list(routes1)
 
 
 #train1.company_name = 'Company1'
