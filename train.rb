@@ -12,13 +12,13 @@ class Train
   TRAIN_NUMBER_FORMAT = /^[\da-zA-zа-яА-я]{3}-?[\da-zA-zа-яА-я]{2}$/
 
   def initialize(number, type)
+    validate!
     @type = type
     @number = number
     @speed = 0  
     @wagon = []
     @@all_trains.push(self)
     register_instance
-    validate!
   end
 
   def self.find(get_number)
@@ -30,8 +30,8 @@ class Train
   end
 
   def receive_train_trace_list(a)
-    @train_trace_list = a
     validate_route(a)
+    @train_trace_list = a
     @current = 0
     @train_trace_list[@current].train_reception(self)
   end
