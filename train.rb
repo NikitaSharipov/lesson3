@@ -4,7 +4,7 @@ require_relative 'instance_counter.rb'
 
 class Train
   include InstanceCounter, CompanyName
-  attr_accessor :speed
+  attr_accessor :speed, :wagon
   attr_reader :number, :type
 
   @@all_trains = []
@@ -12,7 +12,7 @@ class Train
   TRAIN_NUMBER_FORMAT = /^[\da-zA-zа-яА-я]{3}-?[\da-zA-zа-яА-я]{2}$/
 
   def initialize(number, type)
-    validate!
+    validate!(number)
     @type = type
     @number = number
     @speed = 0  
@@ -72,13 +72,17 @@ class Train
     false
   end
 
+  def wagon_block
+    @wagon.each {|wagon| yield(wagon)}
+  end
+
   protected
 
-  def validate!
+  def validate!(number)
 
-    raise "number too short" if @number.length < 2
-    raise "number too long" if @number.length > 20
-    raise "Number has invalid format" if @number !~ TRAIN_NUMBER_FORMAT
+    raise "number too short" if number.length < 2
+    raise "number too long" if number.length > 20
+    raise "Number has invalid format" if number !~ TRAIN_NUMBER_FORMAT
     true
   end
 

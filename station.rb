@@ -47,6 +47,10 @@ class Station
     false
   end
 
+  def train_block
+    @trains.each {|train| yield(train) }
+  end
+
   protected
 
   def validate!
