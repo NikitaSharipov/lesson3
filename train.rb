@@ -94,6 +94,6 @@ class Train
   private
 
   def stop?
-     @speed.zero?
+    @speed.zero?
   end  
 end
