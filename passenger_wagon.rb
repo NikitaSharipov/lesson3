@@ -1,9 +1,8 @@
-class PassengerWagon < Wagon 
-
+class PassengerWagon < Wagon
   attr_accessor :total_seats
   attr_accessor :current_seats
 
-  def initialize (total_seats)
+  def initialize(total_seats)
     super(type)
     @type = 'пассажирский'
     @total_seats = total_seats
@@ -17,5 +16,4 @@ class PassengerWagon < Wagon
   def free_seats
     @total_seats - @current_seats
   end
-
 end

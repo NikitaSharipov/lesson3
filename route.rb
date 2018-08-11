@@ -1,8 +1,6 @@
 require_relative 'instance_counter.rb'
 
 class Route
-
-  #все эти методы используются извне
   include InstanceCounter
 
   def initialize(starting_station, end_station)
@@ -25,7 +23,7 @@ class Route
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
@@ -33,9 +31,10 @@ class Route
 
   def validate!
     perm = true
-    @train_trace_list.each {|station| perm = false unless station.is_a? Station}
-    raise "each station must be Station Object" if perm == false
+    @train_trace_list.each do |station|
+      perm = false unless station.is_a? Station
+    end
+    raise 'each station must be Station Object' if perm == false
     true
   end
-
 end

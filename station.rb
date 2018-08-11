@@ -1,12 +1,11 @@
 require_relative 'instance_counter.rb'
 
-class Station  
-
+class Station
   include InstanceCounter
   attr_reader :name
 
   STATION_NAME_FORMAT = /^[a-zA-zа-яА-я]{2,20}$/
-  
+
   @@all_stations = []
 
   def initialize(name)
@@ -29,12 +28,12 @@ class Station
     @trains
   end
 
-  def return_type 
+  def return_type
     cargo = 0
     @trains.each do |train|
-      cargo += 1 if train.type == "грузовой"
+      cargo += 1 if train.type == 'грузовой'
     end
-    return cargo, @trains.length - cargo
+    [cargo, @trains.length - cargo]
   end
 
   def delete_train(number)
@@ -43,22 +42,20 @@ class Station
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
   def train_block
-    @trains.each {|train| yield(train) }
+    @trains.each { |train| yield(train) }
   end
 
   protected
 
   def validate!
-    raise "name too short" if @name.length < 2
-    raise "name too long" if @name.length > 20
-    raise "Too long or too short station name" if @name !~ STATION_NAME_FORMAT
+    raise 'name too short' if @name.length < 2
+    raise 'name too long' if @name.length > 20
+    raise 'Too long or too short station name' if @name !~ STATION_NAME_FORMAT
     true
   end
-
-  
 end
