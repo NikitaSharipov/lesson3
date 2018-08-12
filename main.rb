@@ -65,6 +65,8 @@ end
 # train2.wagon_coupling(wagon16)
 # train2.wagon_coupling(wagon17)
 
+# rubocop:disable Metrics/BlockLength
+
 loop do
   puts '1. Создать станцию'
   puts '2. Создать поезд'
@@ -255,6 +257,8 @@ loop do
     choosen_train.wagon[wagon_number - 1].take_place
   end
 end
+
+# rubocop:enable Metrics/BlockLength
 
 # validation verification
 # puts '1' if station1.is_a? Route
