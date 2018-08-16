@@ -317,3 +317,41 @@ end
 # puts train1.wagon_count
 
 # train1.wagon_block {|wagon| puts wagon}
+
+# methaprobramming tests
+# train1 = CargoTrain.new 'WW1-22'
+
+# train2 = CargoTrain.new 'WW2-33'
+
+# train1.wagon_material = 'er1'
+# train1.wagon_material = 'rr1'
+# train1.wagon_material = 'tr1'
+
+# train1.wagon_color = 'green'
+# train1.wagon_color = 'yellow'
+# train1.wagon_color = 'blue'
+
+# puts train1.wagon_color
+# puts train1.instances
+
+# puts train1.wagon_color_history
+# puts train1.wagon_material_history
+
+# train1.wagon_old = 14
+# puts train1.wagon_old
+
+# train2.wagon_old = 'dom'
+# puts train2.wagon_old
+
+# train1.speed = nil
+# train1.validate(train1.speed, :presence, 'd', Fixnum )
+
+# train1.speed = nil
+# train1.validate(train1.number, :format, /^[\da-zA-zа-яА-я]{12}-?[\da-zA-zа-яА-я]{2}$/, Fixnum )
+
+# train1.speed = nil
+# train1.validate(train1.number, :type, 'd', String )
+
+# puts train1.number
+
+# train1.validate?

@@ -10,3 +10,5 @@ Metrics/BlockLength:
 Style/ClassVars:
   Enabled: false
 
+Style/AsciiComments:
+  Enabled: false

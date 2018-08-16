@@ -1,24 +1,41 @@
 require_relative 'company_name'
 require_relative 'instance_counter.rb'
+require_relative 'accessors.rb'
+require_relative 'validation.rb'
 
 class Train
   include CompanyName
   include InstanceCounter
-  attr_accessor :speed, :wagon
-  attr_reader :number, :type
+  include Accessors
+  include Validation
+  attr_accessor :speed, :wagon, :number
+  attr_reader :type
+
+  attr_accessor_whith_history :wagon_color, :wagon_material
+
+  strong_attr_accessor(:wagon_old, Integer)
 
   @@all_trains = []
 
   TRAIN_NUMBER_FORMAT = /^[\da-zA-zа-яА-я]{3}-?[\da-zA-zа-яА-я]{2}$/
 
+  validate :number, :presence
+  validate :speed, :presence
+  validate :wagon, :presence
+
+  validate(:number, :format, TRAIN_NUMBER_FORMAT)
+
+  validate :number, :type, String
+
   def initialize(number, type)
-    validate!(number)
+    #    validate!(number)
     @type = type
     @number = number
     @speed = 0
     @wagon = []
     @@all_trains.push(self)
     register_instance
+    #    self.class.validate(number, :type, Fixnum )
   end
 
   def self.find(get_number)
@@ -76,18 +93,18 @@ class Train
     @wagon.each { |wagon| yield(wagon) }
   end
 
-  protected
+  # protected
 
-  def validate!(number)
-    raise 'number too short' if number.length < 2
-    raise 'number too long' if number.length > 20
-    raise 'Number has invalid format' if number !~ TRAIN_NUMBER_FORMAT
-    true
-  end
-
-  def validate_route(route)
-    raise 'train trace list must be Array' unless route.is_a? Array
-  end
+  #  def validate!(number)
+  #    raise 'number too short' if number.length < 2
+  #    raise 'number too long' if number.length > 20
+  #    raise 'Number has invalid format' if number !~ TRAIN_NUMBER_FORMAT
+  #    true
+  #  end
+  #
+  #  def validate_route(route)
+  #    raise 'train trace list must be Array' unless route.is_a? Array
+  #  end
 
   private
 
