@@ -13,7 +13,7 @@ class Train
 
   attr_accessor_whith_history :wagon_color, :wagon_material
 
-  strong_attr_accessor(:wagon_old, Integer)
+  strong_attr_accessor(:wagon_old, Fixnum)
 
   @@all_trains = []
 
@@ -23,18 +23,18 @@ class Train
   validate :speed, :presence
   validate :wagon, :presence
 
-  validate(:number, :format, TRAIN_NUMBER_FORMAT)
+  validate :number, :format, TRAIN_NUMBER_FORMAT
 
   validate :number, :type, String
 
   def initialize(number, type)
-    #    validate!(number)
     @type = type
     @number = number
     @speed = 0
     @wagon = []
     @@all_trains.push(self)
     register_instance
+    validate?
     #    self.class.validate(number, :type, Fixnum )
   end
 

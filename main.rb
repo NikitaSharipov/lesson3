@@ -332,6 +332,7 @@ end
 # train1.wagon_color = 'blue'
 
 # puts train1.wagon_color
+# puts train1.wagon_material
 # puts train1.instances
 
 # puts train1.wagon_color_history
@@ -355,3 +356,8 @@ end
 # puts train1.number
 
 # train1.validate?
+
+# train1.number = nil
+# puts train1.number.nil?
+
+# train1.validate!

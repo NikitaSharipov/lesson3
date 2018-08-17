@@ -22,16 +22,28 @@ module Validation
           type = options[:type]
           additional = options[:additional]
           if type == :presence
-            raise 'Значение нил' if send(name).nil?
-            raise 'Пустая строка' if send(name) == ''
+            validate_type(name)
           elsif type == :format
-            raise 'Number has invalid format' if send(name) !~ additional
+            validate_format(name, additional)
           elsif type == :type
-            raise 'Wrong class' if send(name).class != additional
+            validate_presence(name, additional)
           end
           true
         end
       end
+    end
+
+    def validate_type(name)
+      raise 'Значение нил' if send(name).nil?
+      raise 'Пустая строка' if send(name) == ''
+    end
+
+    def validate_format(name, additional)
+      raise 'Number has invalid format' if send(name) !~ additional
+    end
+
+    def validate_presence(name, additional)
+      raise 'Wrong class' if send(name).class != additional
     end
 
     def validate?

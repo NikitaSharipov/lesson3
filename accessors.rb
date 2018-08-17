@@ -11,13 +11,12 @@ module Accessors
         define_method(name) { instance_variable_get(var_name) }
         define_method("#{name}=".to_sym) do |value|
           instance_variable_set(var_name, value)
-          @inst ||= {}
-          a = @inst[var_name]
-          a ||= []
-          a.push(value)
-          @inst[var_name] = a
+          history_variable = "@#{name}_history"
+          value_array = instance_variable_get(history_variable) || []
+          value_array << value
+          instance_variable_set(history_variable, value_array)
         end
-        define_method("#{name}_history") { @inst[var_name] }
+        define_method("#{name}_history") { instance_variable_get("@#{name}_history") }
       end
     end
 
@@ -26,7 +25,7 @@ module Accessors
       define_method(name) { instance_variable_get(var_name) }
       define_method("#{name}=".to_sym) do |value|
         raise 'Diferent class' if value.class != input_class
-        instance_variable_set(var_name, value) if value.class == input_class
+        instance_variable_set(var_name, value)
       end
     end
   end
@@ -42,3 +41,12 @@ module Accessors
     end
   end
 end
+
+#
+#           @inst ||= {}
+#           value_array = @inst[var_name] || []
+#           value_array << value
+#           @inst[var_name] = value_array
+#           history_variable = "@#{name}_history"
+#           instance_variable_set(history_variable, @inst[var_name])
+#
