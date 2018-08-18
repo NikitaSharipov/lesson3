@@ -33,7 +33,7 @@ module Validation
       end
     end
 
-    def validate_type(name)
+    def validate_presence(name)
       raise 'Значение нил' if send(name).nil?
       raise 'Пустая строка' if send(name) == ''
     end
@@ -42,7 +42,7 @@ module Validation
       raise 'Number has invalid format' if send(name) !~ additional
     end
 
-    def validate_presence(name, additional)
+    def validate_type(name, additional)
       raise 'Wrong class' if send(name).class != additional
     end
 
